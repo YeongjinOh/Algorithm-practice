@@ -12,8 +12,8 @@ N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 
 
 # Example
 
-###-input-
+####input
 8
 
-###-output-
+####output
 92
