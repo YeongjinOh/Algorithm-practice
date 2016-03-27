@@ -1,4 +1,4 @@
-#NO.1674 Tullia and Chocolate II
+#NO.1674   Tullia and Chocolate II
 
 ##Prblem
 
@@ -45,7 +45,7 @@ Query 10
 3 10.8  
 10 9.6  
 
-##limitation
+##Limitation
 
-Time : 1(s)
+Time : 1(s)  
 Memory : 128MB
