@@ -2,16 +2,16 @@
 
 ##Prblem
 
-Find the the biggest square from give n by m matrix.
+Find the the biggest square from the given n by m matrix.
 
 ##Input
 
-On the first line, n, m will be given (1 <= n,m <= 1,000)
+On the first line, n, m will be given (1 <= n,m <= 1,000).  
 And squence of 0 and 1 will be given on the following n lines.
 
 ##Output
 
-Print the area of the biggest square
+Print the area of the biggest square.
 
 ##Example
 
