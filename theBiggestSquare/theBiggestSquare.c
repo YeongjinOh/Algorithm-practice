@@ -24,40 +24,47 @@ int main(void)
 		min = m;
 	
 	// when min=1, just check if 1 exists
-	int k = 0;
-	if (min == 1)
+	
+	// Only check if 1 exists
+	bool existanceofOne = false;
+	for (i=0; i<n; i++)
 	{
-		for (i=0; i<n; i++)
-			for(j=0; j<m; j++)
-				if(M[i][j] == 1)
-					k=1;
-	} else {
-		
-
-		// Implement compression
-		for (k=1; k<min; k++)
-		{
-			// It means the compressed sqaure exists
-			bool existance = false;
-			
-			// Compression
-			for (i=0; i<n-k; i++) {
-				for (j=0; j<m-k; j++) {
-					if( M[i][j] == 1 && M[i+1][j] == 1 && M[i][j+1] == 1 && M[i+1][j+1] == 1)
-						existance = true;
-					else
-						M[i][j]=0;
-				}
-			}
-					
-			if (!existance)
+		if(existanceofOne)
+			break;
+		for(j=0; j<m; j++)
+			if(M[i][j] == 1)
+			{
+				existanceofOne = true;
 				break;
-		}
+			}
 	}
 	
-	int length = k;
 
+	// Implement compression
+	int k;
+	for (k=1; k<min; k++)
+	{
+		// It means the block square which will be compressed exists
+		bool existanceofBlock = false;
+		
+		// Compression
+		for (i=0; i<n-k; i++) {
+			for (j=0; j<m-k; j++) {
+				if( M[i][j] == 1 && M[i+1][j] == 1 && M[i][j+1] == 1 && M[i+1][j+1] == 1)
+					existanceofBlock = true;
+				else
+					M[i][j]=0;
+			}
+		}
+				
+		if (!existanceofBlock)
+			break;
+	}	
+	
 	// Print the output
+	int length = 0;
+	if (existanceofOne)
+		length = k;
 	int area = length*length;
 	printf("%d\n",area);
 
