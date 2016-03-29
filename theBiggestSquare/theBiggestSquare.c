@@ -8,12 +8,15 @@ int main(void)
 	scanf("%d %d", &n, &m);
 
 	// Get the input matrix M
+	char input[m];
 	int M[n][m];
 	int i, j;
 	for (i=0; i<n; i++)
+	{
+		scanf("%s",input);
 		for (j=0; j<m; j++)
-			scanf("%d",&M[i][j]);
-
+			M[i][j] = input[j]-'0';
+	}
 
 	// Get minimum value between n and m
 	int min = n;
