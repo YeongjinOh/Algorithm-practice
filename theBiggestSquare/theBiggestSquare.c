@@ -9,7 +9,7 @@ int main(void)
 
 	// Get the input matrix M
 	int M[n][m];
-	int i, j, k;
+	int i, j;
 	for (i=0; i<n; i++)
 		for (j=0; j<m; j++)
 			scanf("%d",&M[i][j]);
@@ -19,28 +19,40 @@ int main(void)
 	int min = n;
 	if (min > m)
 		min = m;
-
-	// Implement compression
-	for (int k=1; k<min; i++)
+	
+	// when min=1, just check if 1 exists
+	int k = 0;
+	if (min == 1)
 	{
-		// It means the compressed sqaure exists
-		bool existance = false;
+		for (i=0; i<n; i++)
+			for(j=0; j<m; j++)
+				if(M[i][j] == 1)
+					k=1;
+	} else {
 		
-		// Compression
-		for (int i=0; i<n-k; i++) {
-			for (int j=0; j<m-k; j++) {
-				if( M[i][j] == 1 && M[i+1][j] == 1 && M[i][j+1] == 1 && M[i+1][j+1] == 1)
-					existance = true;
-				else
-					M[i][j]=0;
+
+		// Implement compression
+		for (k=1; k<min; k++)
+		{
+			// It means the compressed sqaure exists
+			bool existance = false;
+			
+			// Compression
+			for (i=0; i<n-k; i++) {
+				for (j=0; j<m-k; j++) {
+					if( M[i][j] == 1 && M[i+1][j] == 1 && M[i][j+1] == 1 && M[i+1][j+1] == 1)
+						existance = true;
+					else
+						M[i][j]=0;
+				}
 			}
+					
+			if (!existance)
+				break;
 		}
-		
-		if (!existance)
-			break;
 	}
 	
-	int length = k-1;
+	int length = k;
 
 	// Print the output
 	int area = length*length;
