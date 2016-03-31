@@ -1,21 +1,26 @@
 #include <stdio.h>
-#include <time.h>
+#include <stdbool.h>
 
 // the maximal length of array
 #define al 10001
 
-int max_value(int val[], int length, int * max_idx)
-{
-	int i, max = 0;
-	for (i=0; i<length; i++)
-		if (max < val[i])
-		{
-			max = val[i];
-			*max_idx = i;
-		}
-	return max;
-}
+// print option
+#define pt false
 
+void bubble_sort(int val[], int length)
+{
+	int i, j, tmp;
+	for (i=length-1; i>0; i--)
+	{
+		for (j=0; j<i; j++)
+			if (val[j] < val[i])
+			{
+				tmp = val[j];
+				val[j] = val[i];
+				val[i] = tmp;
+			}
+	}
+}
 
 int main(void)
 {
@@ -30,36 +35,64 @@ int main(void)
 	for (i=0; i<N; i++)
 		scanf("%d",&value[i]);
 
-	/* Start of time checking */
-	clock_t start, end;
-	double cpu_time_used;
-	start=clock();
-
-	
 	/* Before calculation, use some mathematical trick */
-	/* It clearly holds for given input range */
-	
-	int max_idx;
-	int max = max_value(value, N, &max_idx);
-	printf("max:%d, idx:%d\n",max,max_idx);
+	/* First calculate the minimum of coefficient of maximum value */	
+	/* And use it to make M small */
 
-	// k is the minimum coefficient of max
-	int k = (int)(M/max);
-	for (i=0; i<N; i++)
-		if(i != max_idx)
-			k -= value[i];
-	
-	M -= max*k;
+	// make value array in descending order
+	bubble_sort(value,N);
 
+	// erase overlapping value
+	for (i=0; i<N-1; i++)
+		if(value[i] == value[i+1])	{
+			for (j=i+1; j<N-1; j++)
+			{
+				value[j] = value[j+1];
+			}
+			N--;
+			i--;
+		}
+	if (pt)
+		printf("compressed length:%d\n",N);
+
+	// to use this inequation, (M-(v1v2+...+vn-1vn))/v1 < a1
+	long long k = M;
+	for (i=0; i<N-1; i++)
+			k -= value[i]*value[i+1];
+	if (k<0)
+		k=0;
+
+	// minimum coefficient of max
+	int max = value[0];
+	long long minCoeff = (k/(long long)max);
+	
+	M -= minCoeff*max;
+	
+	if(pt)
+		printf("reduced M:%lld coeff:%lld\n",M,minCoeff);
+
+	/* Now we are ready to solve this problem with reduce input M */
 	/* calculate the number of ways to make the total amount M */
 
 	// initailzie
-	int num[al];
+	long long num[al];
 	for(i=0; i<al; i++)
 			num[i]=0;
 	for (i=0; i<N; i++)
 		num[value[i]] = 1;
-	
+
+	/*
+	// For the special case
+	if (M%max == 0)
+	{
+		printf("%lld\n",M/max + minCoeff);
+		return 0;
+	} else if (num[M%max] == 1) {
+		printf("%lld\n",M/max+1+minCoeff);
+		return 0;
+	}
+	*/
+
 	// each step calculates the number of ways up to the total amout i
 	for (i=1; i<=M; i++)
 	{
@@ -85,23 +118,19 @@ int main(void)
 		}
 		
 		// If it's on the first iteration, check if the coin which has the same value with current i exists
-		if (i <= al)
+		if (i < al)
 		{
 			if (min > 0 && num[i%al] == 0)
 				num[i%al] = min+1;
 		} else {
 			if (min > 0)
 				num[i%al] = min+1;
+			else
+				num[i%al] = 0;
 		}
 	}
 	
-	printf("%d\n",num[M%al]+k);
-
-	/* End of time checking */
-	end = clock();
-	cpu_time_used = ((double)(end-start))/CLOCKS_PER_SEC;
-	
-	printf("Running tiem : %.2f\nk:%d\n",cpu_time_used,k);
+	printf("%lld\n",num[M%al]+minCoeff);
 	
 	return 0;
 }
