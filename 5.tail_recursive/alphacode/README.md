@@ -1,6 +1,6 @@
 #No.2011   Alphacode
 
-##Prblem
+##Problem
 
 Alice and Bob need to send secret messages to each other and are discussing ways to encode their messages:  
 

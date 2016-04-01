@@ -1,6 +1,6 @@
 #NO.1915   The biggest square
 
-##Prblem
+##Problem
 
 Find the the biggest square from the given n by m matrix.
 

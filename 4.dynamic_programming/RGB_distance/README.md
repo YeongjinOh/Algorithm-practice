@@ -1,6 +1,6 @@
 #No.1149   RGV distance
 
-##Prblem
+##Problem
 
 In 'RGB distance' village, people live in one of RED, GREEN, and BLUE houses. Every adjacent two people live in the different color. (The first and the last is not adjacent.)  
 Find the minimum cost to color houses with given cost for each color of each house.  
