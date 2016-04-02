@@ -1,4 +1,4 @@
-#No.2193 *  *  *  * pinary number
+#No.2193  pinary number
 
 ##Problem
 
