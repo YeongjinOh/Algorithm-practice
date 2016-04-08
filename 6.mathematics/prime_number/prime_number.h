@@ -6,6 +6,8 @@
 // each structure has it's integer value and the pointer of the next prime_number
 typedef struct prime_number {
 	int p;
+	// the distance between this and the next
+	int dist;
 	struct prime_number * next;
 } prime_number;
 
@@ -24,6 +26,7 @@ void generate_prime(int num, prime_number * prime)
 		if (check_generate_prime(i,prime)) {
 			prime_number * new_prime=(prime_number*)malloc(sizeof(prime_number));
 			new_prime->p=i;
+			tail->dist = i-tail->p;
 			tail->next = new_prime;
 			tail = new_prime;
 		}
