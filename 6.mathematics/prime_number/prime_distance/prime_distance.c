@@ -30,7 +30,6 @@ int main(){
 					L = U;
 					U = tmp;
 				}
-				cnt = *(&min-10);			
 				min=0;
         max=0;
         if (prev_U<U)
