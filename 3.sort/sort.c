@@ -10,12 +10,13 @@ int main(void)
 	for (i=0; i<LENGTH; i++) {
 		back_up[i]= rand()%MOD;
 	}
-	
+
 	printf("The LENGTH of random elements : %d\n", LENGTH);
 
 	sort(bubble_sort,"Bubble");
 	sort(insertion_sort, "Insertion");
 	sort(merge_sort, "Merge");
+	sort(heap_sort, "HEAP");
 
 	return 0;
 }

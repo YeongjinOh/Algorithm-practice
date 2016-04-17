@@ -4,10 +4,116 @@
 #include <stdbool.h>
 
 #define LENGTH 10000
-#define MOD 100000
+#define MOD LENGTH*100
 
 // Default : descending order
 int back_up[LENGTH];
+
+/* Utils */
+
+void swap (int val[], int i, int j){	int tmp = val[i];	val[i] = val[j];	val[j] = tmp; }
+
+void print(int val[], int cnt)
+{
+	int i;
+	for (i=0; i<cnt && i<LENGTH; i++)
+		printf("%d ",val[i]);
+}
+
+void reverse(int val[]) {
+	int i;
+	for (i=0; i<LENGTH/2; i++)
+		swap(val, i, LENGTH-i-1);
+}
+
+void set_array(int rand_num[])
+{
+	int i;
+	for (i=0; i<LENGTH; i++)
+		rand_num[i] = back_up[i];
+}
+
+bool check(int val[])
+{
+	int i;
+	for (i=0; i<LENGTH-1; i++)
+		if (val[i] < val[i+1])
+			return false;
+	return true;
+}
+
+void sort(void (*sort_func)(int *), char * sort_name) 
+{
+	// initialization
+	clock_t begin, end;
+	double time_spent;
+	int rand_num[LENGTH];
+	set_array(rand_num);
+	
+	// sort the random number array
+	begin = clock();
+	(*sort_func)(rand_num);
+	end = clock();
+	time_spent = (double)(end - begin)/CLOCKS_PER_SEC*1000;
+	if (check(rand_num))
+		printf("%s sort takes %.1f(ms)\n",sort_name, time_spent);
+	else
+	{
+		int i;
+		printf("%s sort fails\n",sort_name);
+		for (i=0; i<LENGTH; i++)
+			printf("%d ",rand_num[i]);
+		printf("\n");
+	}
+}
+
+/* Heap sort*/
+
+int left_child(int idx) { return 2*idx+1; }
+int right_child(int idx){ return 2*idx+2; }
+int parent(int idx)			{ return (idx-1)/2; }
+
+void min_heapify (int val[], int idx, int length)
+{
+	int left, right, tmp, next, cur = idx;
+	while (cur < length) {
+		left = left_child(cur);
+		right = right_child(cur);
+		
+		next = cur;
+		if (left < length && val[left] < val[next])
+			next = left;
+
+		if (right < length && val[right] < val[next])
+			next = right;
+
+		if (cur == next)
+			break;
+		
+		swap (val, cur, next);
+		cur = next;
+	}
+}
+
+void build_min_heap(int val[])
+{
+	int i;
+	for (i=parent(LENGTH-1); i>=0; i--)
+		min_heapify (val, i, LENGTH);
+}
+
+void heap_sort(int val[])
+{
+	int i;
+
+	build_min_heap(val);
+	for (i=LENGTH-1; i>0; i--)	{
+		swap(val, 0, i);
+		min_heapify (val, 0, i);
+	}
+}
+
+/* Merge sort */
 
 void merge_sort_helper(int val[], int i, int j)
 {
@@ -37,6 +143,9 @@ void merge_sort(int val[])
 	merge_sort_helper(val,0,LENGTH-1);
 }
 
+
+/* Bubble sort */
+
 void bubble_sort(int val[])
 {
 	int i, j, tmp;
@@ -56,6 +165,9 @@ void bubble_sort(int val[])
 	}
 }
 
+
+/* Insertion sort */
+
 void insertion_sort(int val[])
 {
 	int i, j, tmp;
@@ -68,44 +180,4 @@ void insertion_sort(int val[])
 		}
 }
 
-void set_array(int rand_num[])
-{
-	int i;
-	for (i=0; i<LENGTH; i++)
-		rand_num[i] = back_up[i];
-}
 
-bool check(int val[])
-{
-	int i;
-	for (i=0; i<LENGTH-1; i++)
-		if (val[i] < val[i+1])
-			return false;
-	return true;
-}
-
-
-void sort(void (*sort_func)(int *), char * sort_name) 
-{
-	// initialization
-	clock_t begin, end;
-	double time_spent;
-	int rand_num[LENGTH];
-	set_array(rand_num);
-	
-	// sort the random number array
-	begin = clock();
-	(*sort_func)(rand_num);
-	end = clock();
-	time_spent = (double)(end - begin)/CLOCKS_PER_SEC*1000;
-	if (check(rand_num))
-		printf("%s sort takes %.1f(ms)\n",sort_name, time_spent);
-	else
-	{
-		int i;
-		printf("%s sort fails\n",sort_name);
-		for (i=0; i<LENGTH; i++)
-			printf("%d ",rand_num[i]);
-		printf("\n");
-	}
-}
