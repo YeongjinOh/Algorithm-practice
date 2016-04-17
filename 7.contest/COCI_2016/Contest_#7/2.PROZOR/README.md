@@ -1,6 +1,6 @@
 #NO.11955   PROZOR
 
-##Prblem
+##Problem
 
 Young Marin, now already a respectable star of Croatian cinematography, spends his free time looking out the window. Unfortunately for him, the same activity is also taken up by a few flies that have landed on his window and are looking into the distance. Marin immediately hurried to get his square racket for killing flies. At the same time, he wondered how many flies it is possible to kill in one shot. After trying to scare away the flies unsuccessfully for a few hours, he decided to ask for your help.  
 

@@ -36,9 +36,9 @@ The output must consist of the modified version of the array from the task.
 ####output 1
 
 {  
-  abc,  
-  ono,  
-  sto  
+&nbsp;&nbsp;abc,  
+&nbsp;&nbsp;ono,  
+&nbsp;&nbsp;sto  
 }  
   
   
@@ -59,7 +59,7 @@ The output must consist of the modified version of the array from the task.
 ####output 3
 
 {  
-  znakovi  
+&nbsp;&nbsp;znakovi  
 }  
 
 
@@ -70,15 +70,15 @@ The output must consist of the modified version of the array from the task.
 ####output 4
 
 {  
-  a,  
-  b,  
-  {  
-    c,  
-    d  
-  },  
-  e,  
-  {  
-  }  
+&nbsp;&nbsp;a,  
+&nbsp;&nbsp;b,  
+&nbsp;&nbsp;{  
+&nbsp;&nbsp;&nbsp;&nbsp;c,  
+&nbsp;&nbsp;&nbsp;&nbsp;d  
+&nbsp;&nbsp;},  
+&nbsp;&nbsp;e,  
+&nbsp;&nbsp;{  
+&nbsp;&nbsp;}  
 }  
 
 

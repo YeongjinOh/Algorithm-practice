@@ -1,6 +1,6 @@
 #NO.1674   Tullia and Chocolate II
 
-##Prblem
+##Problem
 
 It has been rumored that strange and unusual creatures inhabit exotic locations around the world. Edmonton features the Tullia, a person beyond any rational explanation. She has the peculiar ability to instantly become hyperactive at the mere mention of caffeine, endangering the safety of any unfortunate individuals in the vicinity.
 
