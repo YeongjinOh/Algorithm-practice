@@ -1,6 +1,6 @@
 #NO.11954   NIZOVI
 
-##Prblem
+##Problem
 
 An array in a certain programming language is defined in the following way:  
 
