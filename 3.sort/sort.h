@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define LENGTH 10000
+#define LENGTH 100000
 #define MOD LENGTH*100
 
 // Default : descending order
@@ -112,6 +112,41 @@ void heap_sort(int val[])
 		min_heapify (val, 0, i);
 	}
 }
+
+/* Quick sort */
+
+int partition (int val[], int p, int r)
+{
+	int pivot = val[r];
+	int j, i=p-1;
+
+	for (j=p; j<r; j++) {
+		if (val[j] > pivot) {
+			i++;
+			swap(val, i, j);
+		}
+	}
+	swap(val, i+1, r);
+
+	return i+1;
+}
+
+void quick_sort_helper(int val[], int p, int r)
+{
+	if (p<r)
+	{
+		int q = partition (val, p, r);
+		quick_sort_helper(val, p, q-1);
+		quick_sort_helper(val, q+1, r);
+	}
+}
+
+void quick_sort(int val[])
+{
+	quick_sort_helper(val, 0, LENGTH-1);
+}
+
+
 
 /* Merge sort */
 

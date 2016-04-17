@@ -13,10 +13,11 @@ int main(void)
 
 	printf("The LENGTH of random elements : %d\n", LENGTH);
 
-	sort(bubble_sort,"Bubble");
-	sort(insertion_sort, "Insertion");
+//	sort(bubble_sort,"Bubble");
+//	sort(insertion_sort, "Insertion");
 	sort(merge_sort, "Merge");
 	sort(heap_sort, "HEAP");
+	sort(quick_sort, "QUICK");
 
 	return 0;
 }
