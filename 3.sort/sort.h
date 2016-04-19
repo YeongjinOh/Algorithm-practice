@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define LENGTH 100000
+#define LENGTH 10000
 #define MOD LENGTH*100
 
 // Default : descending order
@@ -38,7 +38,10 @@ bool check(int val[])
 	int i;
 	for (i=0; i<LENGTH-1; i++)
 		if (val[i] < val[i+1])
+		{
+			printf("At %d-th : %d <  %d\n", i, val[i], val[i+1]);
 			return false;
+		}
 	return true;
 }
 
@@ -66,6 +69,26 @@ void sort(void (*sort_func)(int *), char * sort_name)
 		printf("\n");
 	}
 }
+/* Counting sort */
+void counting_sort (int val[])
+{
+	int i, C[MOD];
+	for (i=0; i<MOD; i++)
+		C[i] = 0;
+	for (i=0; i<LENGTH; i++)
+		C[val[i]]++;
+	for (i=1; i<MOD; i++)
+		C[i] += C[i-1];
+	
+	int B[LENGTH];
+	for (i=LENGTH-1; i>=0; i--)
+		B[--C[val[i]]]=val[i];
+
+	for (i=0; i<LENGTH; i++)
+		val[i] = B[LENGTH-i-1];
+}
+
+
 
 /* Heap sort*/
 
@@ -129,6 +152,25 @@ int partition (int val[], int p, int r)
 	swap(val, i+1, r);
 
 	return i+1;
+}
+
+// find the i-th largest element in the subarray val[p..r]
+int selection (int val[], int p, int r, int i) 
+{
+	// base case
+	if (p==r)
+		return val[p];
+
+	int q = partition (val, p, r);
+	int k = q-p+1;
+	if (k == i)
+		return val[k];
+	else if (k > i)
+		return selection (val, p, q-1, i);
+	else
+		return selection (val, q+1, r, i-k);
+
+
 }
 
 void quick_sort_helper(int val[], int p, int r)
