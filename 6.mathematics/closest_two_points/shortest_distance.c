@@ -22,10 +22,11 @@ int main(void){
 	scanf ("%d",&n);
 
 	// initailize counting array for Counting sort
-	int cnt_x[MAX_SIZE], cnt_y[MAX_SIZE];
+	int cnt_x[MAX_SIZE], cnt_y[MAX_SIZE], end_x[MAX_SIZE];
 	for (i=0; i<MAX_SIZE; i++)	{
 		cnt_x[i] = 0;
 		cnt_y[i] = 0;
+		end_x[i] = -1;
 	}
 
 	// Get the position of each point.
@@ -59,6 +60,9 @@ int main(void){
 		new_idx = --cnt_x[tmp_x[i]+10000];
 		x[new_idx] = tmp_x[i];
 		y[new_idx] = tmp_y[i];
+		if (end_x[tmp_x[i]+10000] == -1)
+			end_x[tmp_x[i]+10000] = new_idx;
+
 	}
 
 
@@ -66,16 +70,19 @@ int main(void){
 
 	int cur, min = dist(x, y, 0, 1);
 	for (i=0; i<n-1 && min>1; i++) {
-		int limit = x[i]+sqrtInt(min);
-
-		for (j=i+1; j<n && x[j] < limit; j++) {
+		int limit_x = x[i]+sqrtInt(min), limit_y = y[i]+sqrtInt(min);
+		
+		for (j=i+1; j<n && x[j] < limit_x; j++) {
 			
 			cur = dist(x, y, i, j);
 			if (min > cur) {
 				min = cur;
-				limit = x[i]+sqrtInt(min);
+				limit_x = x[i]+sqrtInt(min);
+				limit_y = y[i]+sqrtInt(min);
 			}
-
+			
+			if (y[j] >= limit_y)
+				j = end_x[x[j]+10000];
 
 		}
 	}
