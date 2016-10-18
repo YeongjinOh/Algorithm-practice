@@ -25,6 +25,7 @@ typedef vector<int> vi;
 #define pb push_back
 #define fi first
 #define se second
+#define INF 5e18
 ll n, k, l, r, a, b;
 
 
