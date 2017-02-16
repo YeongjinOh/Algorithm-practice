@@ -4,30 +4,31 @@
 #include <cstdio>
 
 using namespace std;
+const int mod = 100;
 
 vector<int> normalize(vector<int>& c) {
     for (int i=0; i<c.size()-1; i++) {
         if (c[i] < 0) {
             c[i+1]--;
-            c[i] += 10;
+            c[i] += mod;
             continue;
         }
-        c[i+1] += c[i]/10;
-        c[i] = c[i]%10;
+        c[i+1] += c[i]/mod;
+        c[i] = c[i]%mod;
     }
     while(c.size()>1 && c.back() == 0) {c.pop_back();}
     return c;
 }
 
 vector<int> multiply(const vector<int>& a, const vector<int>& b) {
-    vector<int> c(a.size()+b.size()+1,0);
+    vector<int> c(a.size()+b.size()+20,0);
     for (int i=0; i<a.size(); ++i)
         for (int j=0; j<b.size(); ++j) {
             c[i+j] += a[i]*b[j];
         }
     for (int i=0; i<c.size()-1; i++) {
-        c[i+1] += c[i]/10;
-        c[i] = c[i]%10;
+        c[i+1] += c[i]/mod;
+        c[i] = c[i]%mod;
     }
     return normalize(c);
 }
@@ -56,18 +57,22 @@ vector<int> sub(const vector<int>& a, const vector<int> & b) {
     }
     return normalize(c);
 }
-
 void print(const vector<int>& a) {
-    for (int i=a.size()-1; i>=0; --i)
-        cout << a[i];
+    bool fst=true;
+    cout<<a[a.size()-1];
+    for (int i=a.size()-2; i>=0; --i) {
+            printf("%.2d",a[i]);
+    }
     cout << endl;
 }
+
 // a is longer than b
 vector<int> karatsuba(const vector<int>& a, const vector<int>& b) {
+    cout << endl;
     int an = a.size(), bn = b.size();
     if (an < bn) return karatsuba(b,a);
-//    if (an == 0 || bn == 0) return vector<int>();
-    if (an < 50) return multiply(a,b);
+    if (an == 0 || bn == 0) return vector<int>();
+    if (an < 20) return multiply(a,b);
     int half = an/2;
     vector<int> a0(a.begin(), a.begin()+half);
     vector<int> a1(a.begin()+half, a.end());
@@ -82,6 +87,26 @@ vector<int> karatsuba(const vector<int>& a, const vector<int>& b) {
     for (int i=0; i<z2.size(); i++) c[i+2*half] = z2[i];
     return normalize(c);
 }
+int getTen(int k) {
+    if (k == 0)
+        return 1;
+    return 10*getTen(k-1);
+}
+vector<int> getLongNumbers (const vector<int>& a) {
+    int num = 0;
+    vector<int> ret;
+    for (int i=0; i<a.size(); i++) {
+        if (i%2 == 0) {
+            if (i>0)
+                ret.push_back(num);
+            num = 0;
+        }
+        num += a[i]*getTen(i%2);
+    }
+    ret.push_back(num);
+    return ret;
+}
+
 int main() {
     char n;
     bool isA = true;
@@ -100,7 +125,9 @@ int main() {
     }
     reverse(a.begin(),a.end());
     reverse(b.begin(),b.end());
-    vector<int> c = karatsuba(a,b);
-    print(c);
+    vector<int> longa = getLongNumbers(a);
+    vector<int> longb = getLongNumbers(b);
+    vector<int> longc = karatsuba(longa,longb);
+    print(longc);
     return 0;
 }
