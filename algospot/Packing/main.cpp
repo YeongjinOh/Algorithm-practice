@@ -13,20 +13,28 @@ int maxw[LEN+1][MAX_W], choice[LEN+1][MAX_W];
 // n is index of current item
 // m is remaining weight
 int get(int n, int m) {
-    if (m-v[n] < 0) return NEG_INF;
+    if (m < 0) return NEG_INF;
+    if (n > N) return 0;
     int& ret = maxw[n][m];
     if (ret != -1) return ret;
-    int max = 0, idxOfMax = -1;
-    for (int nextN = n+1; nextN <= N; ++nextN) {
-        int cur = get(nextN, m-v[n]);
-        if (max < cur) {
-            max = cur;
-            idxOfMax = nextN;
-        }
-    }
-    ret = max + w[n];
-    choice[n][m] = idxOfMax;
+    int use = get(n+1,m-v[n]) + w[n], unuse = get(n+1,m);
+    if (use > unuse)
+        ret = use;
+    else
+        ret = unuse;
     return ret;
+}
+
+void reconstruct (int n, int m, vector<string>& res) {
+    if (m < 0) return;
+    if (n > N) return;
+    int use = get(n+1,m-v[n]) + w[n], unuse = get(n+1,m);
+    if (use > unuse) {
+        res.push_back(s[n]);
+        reconstruct(n+1,m-v[n],res);
+        return;
+    }
+    reconstruct(n+1,m,res);
 }
 
 int main() {
@@ -40,17 +48,10 @@ int main() {
         memset(maxw,-1,sizeof(maxw));
         memset(choice,-1,sizeof(choice));
         cout << get(0,W);
-        int n=0,m=W,tmp;
-        int cnt = 0;
+
         vector<string> res;
-        while(choice[n][m] != -1) {
-            tmp = m;
-            m -= v[n];
-            n = choice[n][tmp];
-            res.push_back(s[n]);
-            cnt++;
-        }
-        cout << " " << cnt << endl;
+        reconstruct(0,W,res);
+        cout << " " << res.size() << endl;
         for (int i=0; i<res.size(); ++i)
             cout << res[i] << endl;
     }
