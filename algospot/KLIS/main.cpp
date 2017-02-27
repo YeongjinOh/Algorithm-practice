@@ -16,7 +16,7 @@ long long MAX = 1;
 #define PB push_back
 MII mp;
 
-// O(n)
+// O(n^2)
 int lis(int start) {
     int& ret = cacheLIS[start];
     if (ret != -1) return ret;
@@ -32,7 +32,7 @@ int lis(int start) {
     return ret;
 }
 
-// O(n)
+// O(n^2)
 long long count(int start) {
     if (lis(start) == 1) return 1;
     long long& cnt = cacheCnt[start];
