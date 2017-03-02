@@ -3,22 +3,24 @@
 #include <algorithm>
 #include <cstring>
 #include <vector>
+#include <map>
 
 using namespace std;
-#define LEN 17
+#define LEN 21
+#define MAX_DEPTH 5
 #define INF 987654321
 int N;
 double dist[LEN][LEN], minDist[LEN];
-double cache[1<<LEN][LEN];
+map<int, double> cache[MAX_DEPTH+1][LEN];
 double best;
-int cntTopDown, cntBottomUp, cntOptimized;
+int cnt;
 vector<int> neighbors[LEN];
 
 double bottomUp(int cur, int visit) {
-    cntBottomUp++;
     if (visit == (2<<N)-1)
         return 0.0;
-    double &res = cache[visit][cur];
+    int remaining = N+1 - __builtin_popcount(visit);
+    double &res = cache[remaining][cur][visit];
     if (res>0) return res;
     res = INF;
     for (int i=1; i<=N; i++) {
@@ -33,8 +35,8 @@ double bottomUp(int cur, int visit) {
 // 예를 들어, 같은 cur, visit에서 curLength가 10일 때 그 값을 DP에 저장해놓고, curLength가 5일 때 그대로 값을 쓰면 문제가 생긴다.
 // 웬만하면 섞어쓰지 말자!!!
 
+/*
 double topDown(int cur, int visit, double curLength) {
-    cntTopDown++;
     if (visit == (2<<N)-1) {
         best = min<double>(best,curLength);
         return curLength;
@@ -49,6 +51,7 @@ double topDown(int cur, int visit, double curLength) {
     }
     return res;
 }
+*/
 
 // current p-a- ... -b-q
 // but p-b- ... -a-q is smaller or equal to.
@@ -64,42 +67,37 @@ bool checkMoreSearch (vector<int> & path) {
     return true;
 }
 
-bool checkAllVisit(vector<bool> & visit) {
-    for (int i=0; i<visit.size(); ++i)
-        if(!visit[i]) return false;
-    return true;
-}
-double optimizedTopDown(vector<int> & path, vector<bool> & visit, double curLength) {
-    cntOptimized++;
-    if (checkAllVisit(visit)) {
+double optimizedTopDown(vector<int> & path, int visit, double curLength) {
+    if (visit == (2<<N)-1) {
         best = min<double>(best,curLength);
         return curLength;
     }
+
     if (!checkMoreSearch(path)) return INF;
     int cur = path.back();
     double res = INF;
 
     // check sum of min distance
     double minSum = 0.0;
-    if (visit.size() != N+1)
-        cout << "asdsad" << endl;
     for (int i=1; i<=N; ++i) {
-        if (!visit[i]) {
+        if ((visit & 1<<i) == 0)
             minSum += minDist[i];
-        }
     }
     if (curLength + minSum > best)
         return INF;
 
+    // use bottom-up if deep enough
+    int remaining = N+1 - __builtin_popcount(visit);
+    if (remaining <= MAX_DEPTH) {
+        return curLength + bottomUp(cur, visit);
+    }
 
     for (int i=0; i<neighbors[cur].size(); ++i) {
         int next = neighbors[cur][i];
-        if (visit[next]) continue;
+        if (visit & 1<<next) continue;
         if (best < curLength + dist[cur][next]) continue;
         path.push_back(next);
-        visit[next] = true;
-        res = min<double>(res, optimizedTopDown(path, visit, dist[cur][next] + curLength));
-        visit[next] = false;
+        res = min<double>(res, optimizedTopDown(path, visit+(1<<next), dist[cur][next] + curLength));
         path.pop_back();
     }
     return res;
@@ -134,19 +132,10 @@ int main() {
         for (int i=1; i<=N; ++i)
             neighbors[0].push_back(i);
 
-//        memset(cache,0,sizeof(cache));
-        cntTopDown = 0;
-        cntBottomUp = 0;
         vector<int> path;
-        vector<bool> visit (N+1, false);
-        visit[0] = true;
         path.push_back(0);
         best = INF;
-        //printf("topDown:%.10lf \twith cnt:%d\n",topDown(0,1,0.0), cntTopDown);
-//        printf("bottomUp:%.10lf \twith cnt:%d\n",bottomUp(0,1), cntBottomUp);
-        best = INF;
-//        printf("Opt-Topdown:%.10lf \twith cnt:%d\n",optimizedTopDown(path,visit,0.0), cntOptimized);
-        printf("%.10lf\n",optimizedTopDown(path,visit,0.0));
+        printf("%.10lf\n",optimizedTopDown(path,1,0.0));
     }
     return 0;
 }
