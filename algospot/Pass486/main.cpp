@@ -5,28 +5,7 @@
 #define MAX 10000001
 using namespace std;
 
-int minFactor[MAX];
-
-// check if the number of factors of num = n
-bool check(int n, int num) {
-    // factor, num
-    while (minFactor[num] != -1) {
-        int cnt = 0;
-        int factor = minFactor[num];
-        while (num % factor == 0) {
-            cnt++;
-            num /= factor;
-        }
-        if (cnt > 0) {
-            if (n % (cnt+1) != 0) return false;
-            n /= (cnt+1);
-        }
-    }
-    if (num > 1) {
-        return n == 2;
-    }
-    return n == 1;
-}
+int minFactor[MAX], numFactors[MAX];
 
 int main() {
     int C, n, lo, hi;
@@ -41,12 +20,29 @@ int main() {
             }
         }
     }
+
+    // build number of factors
+    memset(numFactors,0,sizeof(numFactors));
+    numFactors[1] = 1;
+    for (int i=2; i<MAX; i++) {
+        if (minFactor[i] == -1) {
+            numFactors[i] = 2;
+        } else {
+            int factor = minFactor[i], cnt = 0;
+            int num = i;
+            while (num % factor == 0) {
+                num /= factor;
+                cnt++;
+            }
+            numFactors[i] = numFactors[num] * (cnt + 1);
+        }
+    }
     cin >> C;
     while (C--) {
         cin >> n>> lo >> hi;
         int cnt = 0;
         for (int i=lo; i<=hi; i++) {
-            if (check(n, i))
+            if (numFactors[i] == n)
                 cnt++;
         }
         cout << cnt << endl;
