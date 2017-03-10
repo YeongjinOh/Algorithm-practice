@@ -18,6 +18,8 @@ int main () {
         keyLen++;
     }
     /*
+     * let n = keyLen
+     * it takes O(n^3)
     // i = end of substr = len(substr)-1
     for (int i=0; i<keyLen; i++) {
 
@@ -40,6 +42,8 @@ int main () {
     */
 
     // optimized partial match building
+    // it takes O(n^2)
+    /*
     // i = start position
     for (int i=1; i<keyLen; i++) {
         for (int j=0; i+j<keyLen; j++) {
@@ -48,8 +52,25 @@ int main () {
                 kmp[i+j] = j+1;
         }
     }
+    */
 
-    int cnt = 0, i = 0, j = 0;
+    // one more optimize up to O(n)
+    int i=1, j=0;
+    while(i+j < keyLen) {
+        if (key[i+j] == key[j])  {
+            kmp[i+j] = j+1;
+            j++;
+        } else if (j==0) {
+            i++;
+        } else {
+            i += j - kmp[j-1];
+            j -= kmp[j-1];
+        }
+    }
+
+    int cnt = 0;
+    i = 0;
+    j = 0;
     while(i + keyLen <= strLen) {
         bool match = true;
         for (; j<keyLen; j++) {
