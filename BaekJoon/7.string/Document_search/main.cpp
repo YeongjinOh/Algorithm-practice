@@ -17,6 +17,7 @@ int main () {
         if (key[keyLen] == '\n') break;
         keyLen++;
     }
+    /*
     // i = end of substr = len(substr)-1
     for (int i=0; i<keyLen; i++) {
 
@@ -36,6 +37,18 @@ int main () {
             }
         }
     }
+    */
+
+    // optimized partial match building
+    // i = start position
+    for (int i=1; i<keyLen; i++) {
+        for (int j=0; i+j<keyLen; j++) {
+            if (key[i+j] != key[j]) break;
+            if (kmp[i+j] == 0)
+                kmp[i+j] = j+1;
+        }
+    }
+
     int cnt = 0, i = 0, j = 0;
     while(i + keyLen <= strLen) {
         bool match = true;
