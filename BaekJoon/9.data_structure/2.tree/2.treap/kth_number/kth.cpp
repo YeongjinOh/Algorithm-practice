@@ -53,6 +53,28 @@ TreeNode * insert (TreeNode * root, TreeNode * node) {
     return root;
 }
 
+TreeNode * merge (TreeNode * left, TreeNode * right) {
+    if (left == NULL) return right;
+    if (right == NULL) return left;
+    if (left->priority < right->priority) {
+        right->setLeft(merge(left,right->left));
+        return right;
+    }
+    left->setRight(merge(left->right,right));
+    return left;
+}
+
+TreeNode * del (TreeNode * root, int key) {
+    if (root == NULL) return root;
+    if (root->key < key) {
+        root->setRight(del(root->right,key));
+        return root;
+    } else if (root->key > key) {
+        root->setLeft(del(root->left,key));
+        return root;
+    }
+    return merge(root->left, root->right);
+}
 
 void inorder(TreeNode * root) {
     if (root == NULL) return;
@@ -76,16 +98,18 @@ int find(TreeNode * root, int k) {
 int main() {
     int n, k, key;
 //    cin >> n >> k;
-    n = 5000000;
-    k = 3500000;
+    n = 50;
+    k = 35;
     TreeNode * root;
     while(n--) {
 //        cin >> key;
         key = n;
         root = insert(root, new TreeNode(key));
     }
-    int kth = find (root, k);
+    root = del(root,11);
+    root = del(root,8);
     printf("root:%d\n",root->key);
+    int kth = find (root, k);
     cout << kth << endl;
 
     return 0;
