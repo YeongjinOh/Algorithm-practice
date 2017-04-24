@@ -1,11 +1,16 @@
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
+#include <cstdio>
 #include <cmath>
+#include <ctime>
 #include <queue>
 #include <set>
 #include <map>
 #include <string>
+#include <bitset>
 #include <vector>
+#include <complex>
 #include <algorithm>
 using namespace std;
 typedef long long ll;
@@ -23,10 +28,18 @@ typedef vector<int> vi;
 #define INF 5e18
 
 
-int t;
+ll t, n, a, b, c, d;
+
+
 void solve () {
-    int res;
-    cout << res;
+    cin >> d >> n;
+    double vmax = INF;
+    for (int i=0; i<n; i++) {
+        ll k, s;
+        cin >> k >> s;
+        vmax = min<double>(vmax, (double)d*s/(d-k));
+    }
+    printf("%.6lf", vmax);
 }
 
 int main() {

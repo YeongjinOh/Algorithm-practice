@@ -25,8 +25,26 @@ typedef vector<int> vi;
 
 int t;
 void solve () {
-    int res;
-    cout << res;
+    int n; cin >> n;
+    vector<int> cnt(n);
+    rep(i,0,n) cin >> cnt[i];
+    int sum = 0;
+    rep(i,0,n) sum += cnt[i];
+    bool jump = true;
+    while(sum--) {
+        int mx = 0;
+        for (int i=1; i<n; i++) {
+            if (cnt[i] > cnt[mx]) mx = i;
+        }
+        cnt[mx]--;
+        if (cnt[mx]*2 > sum-1) jump = true;
+        if (jump) {
+            printf("%c", 'A'+mx);
+            jump = false;
+        } else {
+            printf(" %c", 'A'+mx);
+        }
+    }
 }
 
 int main() {

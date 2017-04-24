@@ -1,11 +1,16 @@
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
+#include <cstdio>
 #include <cmath>
+#include <ctime>
 #include <queue>
 #include <set>
 #include <map>
 #include <string>
+#include <bitset>
 #include <vector>
+#include <complex>
 #include <algorithm>
 using namespace std;
 typedef long long ll;
@@ -23,8 +28,11 @@ typedef vector<int> vi;
 #define INF 5e18
 
 
-int t;
+ll t, n, a, b, c;
+
+
 void solve () {
+    cin >> n;
     int res;
     cout << res;
 }
