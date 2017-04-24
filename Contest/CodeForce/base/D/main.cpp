@@ -1,16 +1,11 @@
 #include <iostream>
 #include <cstring>
-#include <cstdlib>
-#include <cstdio>
 #include <cmath>
 #include <ctime>
 #include <queue>
 #include <set>
 #include <map>
-#include <string>
-#include <bitset>
 #include <vector>
-#include <complex>
 #include <algorithm>
 using namespace std;
 typedef long long ll;
@@ -25,13 +20,12 @@ typedef vector<int> vi;
 #define pb push_back
 #define fi first
 #define se second
-ll n, k, l, r, a, b;
+#define INF 5e18
 
+int n;
 
 int main() {
-    scanf("%lld", &n);
-
-
+    scanf("%d", &n);
 
     return 0;
 }

@@ -22,10 +22,24 @@ typedef vector<int> vi;
 #define se second
 #define INF 5e18
 
-int n;
-
+int n, k;
+int a[100005];
 int main() {
-    scanf("%d", &n);
-
+    scanf("%d%d", &n, &k);
+    rep(i,0,n) scanf("%d", &a[i]);
+    int minIdx = 0;
+    rep(i,1,n) if (a[i] < a[minIdx]) minIdx = i;
+    ll cnt = 0;
+    rep(i,0,n) {
+        if (i != minIdx) {
+            ll diff = a[i] - a[minIdx];
+            if (diff%k != 0) {
+                cout << -1 << endl;
+                return 0;
+            }
+            cnt += diff/k;
+        }
+    }
+    cout << cnt << endl;
     return 0;
 }
