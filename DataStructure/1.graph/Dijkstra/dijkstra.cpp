@@ -8,7 +8,6 @@ using namespace std;
 const int sz = 20001;  // size
 vector<pair<int,int> > a[sz]; // adjacency list
 int dist[sz]; // store shortest distance
-bool visit[sz] = {0};
 
 void Dijkstra(int source, int n) {
     for (int i=1; i<=n; i++)

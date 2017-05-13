@@ -1,13 +1,16 @@
 #include <iostream>
 #include <algorithm>
 #include <queue>
+#include <map>
 using namespace std;
 #define LEN 1000
 #define INF 987654321
 
 // vector<pair<int, int> > g[LEN];
 // capacity, flow
-int c[LEN][LEN], f[LEN][LEN];
+// int c[LEN][LEN], f[LEN][LEN];
+vector<pair<int, int> > c[LEN];
+map<pair<int,int>, int> cHash, f;
 int v, e;
 
 // Ford-Fulkerson algorithm to calculate maxFlow
@@ -23,9 +26,10 @@ int maxFlow (int s, int t) {
         visit[s] = true;
         while(!q.empty() && !visit[t]) {
             int here = q.front(); q.pop();
-//            if (here == t) break;
-            for (int there=0; there<v; there++) {
-                if (!visit[there] && c[here][there]-f[here][there] > 0) {
+            for (int i=0; i<c[here].size(); i++) {
+                int there = c[here][i].first;
+                int capacity = c[here][i].second;
+                if (!visit[there] && capacity - f[make_pair(here,there)] > 0) {
                     parent[there] = here;
                     visit[there] = true;
                     q.push(there);
@@ -36,26 +40,25 @@ int maxFlow (int s, int t) {
         // follow path to get minFlow
         int minFlow = INF;
         for(int here =t; here!= s; here = parent[here]) {
-            minFlow = min<int>(minFlow, c[parent[here]][here]-f[parent[here]][here]);
+            minFlow = min<int>(minFlow, cHash[make_pair(parent[here],here)]-f[make_pair(parent[here],here)]);
         }
         // update
         totalFlow += minFlow;
         for(int here =t; here!= s; here = parent[here]) {
-            f[parent[here]][here] += minFlow;
-            f[here][parent[here]] -= minFlow; // IMPORTANT 유랑의 대칭성
+            f[make_pair(parent[here],here)] += minFlow;
+            f[make_pair(here,parent[here])] -= minFlow; // IMPORTANT 유랑의 대칭성
         }
     }
     return totalFlow;
 }
 
 int main() {
-    memset(c,0,sizeof(c));
-    memset(f,0,sizeof(f));
     cin >> v >> e;
     for (int i=0; i<e; i++) {
         int a, b, w;
         cin >> a >> b >> w;
-        c[a][b] = w;
+        c[a].push_back(make_pair(b,w));
+        cHash[make_pair(a,b)] = w;
     }
     int res = maxFlow(0, v-1);
     cout << res << endl;

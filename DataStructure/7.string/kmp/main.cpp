@@ -64,10 +64,12 @@ int main () {
             i++;
         } else {
             i += j - kmp[j-1];
-            j -= kmp[j-1];
+//            j -= kmp[j-1];
+            j = kmp[j-1];
         }
     }
-
+    printf("kmp : ");
+    for (int i=0; i<keyLen; i++) printf("%d ", kmp[i]); printf("\n");
     int cnt = 0;
     i = 0;
     j = 0;

@@ -3,8 +3,8 @@ using namespace std;
 
 struct TreeNode {
     int num;
-    TreeNode * left;
-    TreeNode * right;
+    TreeNode* left;
+    TreeNode* right;
     TreeNode (int n):num(n), left(NULL), right(NULL) { }
 };
 
@@ -78,6 +78,7 @@ int main() {
     cin >> n;
     while(n--) {
         cin >> num;
+        printf("delete %d\n", num);
         root = del(root ,num);
     }
 
