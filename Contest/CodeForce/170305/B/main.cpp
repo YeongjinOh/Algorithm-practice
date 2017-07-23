@@ -27,34 +27,31 @@ typedef vector<int> vi;
 #define se second
 ll n, k, l, r, a, b;
 
-ll fastSqrt (ll n) {
-    if (n<=0) return 0;
-    ll l = 0, r = 1<<30;
-    while (l != r) {
-        ll mid = (l+r+1)/2;
-        if (mid * mid <= n)
-            l = mid;
-        else
-            r = mid-1;
-    }
-    return l;
+#define MAX 60005
+ll x[MAX], v[MAX];
+
+double calc(double pos) {
+    double res = 0;
+    rep(i, 0, n)
+        res = max(res, abs(pos-x[i])/v[i]);
+    return res;
 }
 
-// non-overflow integer sqrt
-int sqrt (int num) {
-    if(num <= 0) return 0;
-    int l = 0, r = num;
-    while (l<r){
-        int mid = (l+r+1)/2;
-        if (mid <= num / mid) l = mid;
-        else r = mid -1;
-    }
-    return l;
-}
 int main() {
     scanf("%lld", &n);
-    cout << fastSqrt (n) << endl;
-
+    rep(i, 0, n)
+        scanf("%lld,", x+i);
+    rep(i, 0, n)
+        scanf("%lld,", v+i);
+    double l = 0, r = 1e9;
+    rep(i, 0, 200) {
+        double l1 = (2*l+r)/3, l2 = (l+2*r)/3;
+        if (calc(l1) > calc(l2))
+            l = l1;
+        else
+            r = l2;
+    }
+    printf("%.10lf\n", calc(l));
 
     return 0;
 }

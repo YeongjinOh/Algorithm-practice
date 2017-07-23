@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include <istream>
+#include <sstream>
 #include <cmath>
 #include <queue>
 #include <set>
@@ -21,7 +23,21 @@ typedef vector<int> vi;
 #define fi first
 #define se second
 #define INF 5e18
+#define double long double // use long double when using bisection
 
+// read string parsed by white space
+void readStrings() {
+    int n; cin >> n;
+    char buffer[10000];
+    gets(buffer);
+    vector<vector<string> > sentances(n);
+    for (int i=0; i<n; i++) {
+        gets(buffer);
+        string word = buffer;
+        istringstream ss(word);
+        while (ss >> word) sentances[i].push_back(word);
+    }
+}
 
 int t;
 void solve () {
@@ -35,6 +51,7 @@ int main() {
         cout << "Case #" << i << ": ";
         solve();
         cout << endl;
+//        fprintf(stderr, "case %d done\n", i);
     }
     return 0;
 }

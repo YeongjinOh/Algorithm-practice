@@ -25,36 +25,24 @@ typedef vector<int> vi;
 #define pb push_back
 #define fi first
 #define se second
+#define INF 5e18
 ll n, k, l, r, a, b;
 
-ll fastSqrt (ll n) {
-    if (n<=0) return 0;
-    ll l = 0, r = 1<<30;
-    while (l != r) {
-        ll mid = (l+r+1)/2;
-        if (mid * mid <= n)
-            l = mid;
-        else
-            r = mid-1;
-    }
-    return l;
-}
-
-// non-overflow integer sqrt
-int sqrt (int num) {
-    if(num <= 0) return 0;
-    int l = 0, r = num;
-    while (l<r){
-        int mid = (l+r+1)/2;
-        if (mid <= num / mid) l = mid;
-        else r = mid -1;
-    }
-    return l;
-}
+#define MAX 100001
+bool socks[MAX];
 int main() {
     scanf("%lld", &n);
-    cout << fastSqrt (n) << endl;
-
+    n *= 2;
+    int num;
+    int cur = 0, res = 0;
+    while (n--) {
+        scanf("%d",&num);
+        socks[num] = !socks[num];
+        if (socks[num]) cur++;
+        else cur--;
+        res = max(cur, res);
+    }
+    cout << res << endl;
 
     return 0;
 }
